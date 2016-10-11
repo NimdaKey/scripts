@@ -10,6 +10,11 @@ echo '[+] check url: '$source
 for url in $(curl -s $source | grep -a "pdf\|zip" | awk -F '"' '{printf ("%s ",$4)}');
 do
 	echo '[+] find: '$url
+	pdf=`echo $url | awk -F "/" '{printf $NF}'`
+	if [ -f "$pdf" ]; then
+		echo "[-] pdf: $pdf exists"
+		continue
+	fi
 	wget -c -v $url
 	echo -e "done"
 done
